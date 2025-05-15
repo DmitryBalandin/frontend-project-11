@@ -1,0 +1,15 @@
+name: "My check"
+
+on:
+  push 
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install dependencies
+      run: make install
+
+    - name: Run test
+      run: make lint

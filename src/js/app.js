@@ -1,10 +1,12 @@
-import { watchedObject } from './watcher.js';
-
+import { watchedObject } from './watcher.js'
+import validator from './validator.js';
+import state from './state.js';
 export default () => {
-  const form = document.querySelector('form.rss-form');
+  const form = document.querySelector('form.rss-form')
   form.addEventListener('submit', (e) => e.preventDefault())
-  const input = document.querySelector('#url-input');
+  const input = document.querySelector('#url-input')
   input.addEventListener('change', () => {
-    watchedObject.inputValue = input.value;
+    console.log('asa')
+    validator(input.value,state.listAddRssNews)
   })
 }

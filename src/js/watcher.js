@@ -1,24 +1,11 @@
-import onChange from 'on-change';
-import state from './state';
-import validator from './validator';
-import render from './view';
-
+import onChange from 'on-change'
+import state from './state'
+import validator from './validator'
+import renderErrors from './view'
 
 export const watchedObject = onChange(state, function (path, value, previousValue, applyData) {
-	validator(watchedObject.inputValue)
-		.then((e) => {
-			// onChange.target(watchedObject).inputValue = '';
-			// watchedObject.rssIsValid = true;
+	console.log('watcher')
+  renderErrors(state)
+})
 
-			onChange.target(watchedObject).listAddRssNews.push(e.url);
-			onChange.target(watchedObject).erorrLinkRss = '';
-			watchedObject.rssIsValid = true;
-		})
-		.catch((e) => {
-			
-				onChange.target(watchedObject).erorrLinkRss = e.errors;
-				watchedObject.rssIsValid = false;
-			
-		});
-	render(watchedObject);
-});
+// https://rt.com/rss/news

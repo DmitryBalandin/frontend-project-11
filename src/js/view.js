@@ -1,8 +1,6 @@
 
 
-
-
-const render = (state) => {
+const renderErrors = (state) => {
   const input = document.querySelector('#url-input');
   const feedback = document.querySelector('p.feedback');
   console.log(state.rssIsValid);
@@ -15,6 +13,7 @@ const render = (state) => {
     input.classList.remove('is-invalid');
     feedback.innerHTML ='';
   };
+  input.value = state.inputValue;
   console.log(state);
 }
-export default render;
+export default renderErrors;

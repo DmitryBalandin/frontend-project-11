@@ -2,6 +2,6 @@ const state = {
   inputValue: '',
   rssIsValid: true,
   listAddRssNews: [],
-  erorrsLinkRss: '',
+  feedbackRss: '',
 }
 export default state

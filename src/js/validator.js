@@ -1,6 +1,6 @@
-import { object, string, setLocale } from 'yup'
+import { object, string, setLocale, ValidationError } from 'yup'
 import { watchedObject } from './watcher'
-
+import state from './state';
 
 const validator = (inputValue, listAddRssNews, i18) => {
   setLocale({
@@ -22,19 +22,21 @@ const validator = (inputValue, listAddRssNews, i18) => {
   })
   return urlShema.validate({ url: inputValue }, { abortEarly: false })
     .then((e) => {
-
-      watchedObject.listAddRssNews.push(e.url)
-      watchedObject.erorrLinkRss = []
-      watchedObject.rssIsValid = true
-      watchedObject.inputValue = ''
+      
+      // const message = i18.t('success')
+      // watchedObject.listAddRssNews.push(e.url)
+      // watchedObject.feedbackRss = message;
+      // watchedObject.rssIsValid = true
+      // watchedObject.inputValue = '';
+      return inputValue;
     })
-    .catch((e) => {
-     
-      const message = i18.t(e.message.key);
-      watchedObject.inputValue = inputValue;
-      watchedObject.erorrLinkRss = message;
-      watchedObject.rssIsValid = false;
-    })
+    // .catch((e) => {
+    //   const message = i18.t(e.message.key);
+    //   watchedObject.feedbackRss = message;
+    //   watchedObject.rssIsValid = false;
+    //   watchedObject.inputValue = inputValue;
+    //   throw new Error('not validn url');
+    // })
 
 }
 

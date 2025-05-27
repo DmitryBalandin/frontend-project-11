@@ -1,7 +1,8 @@
 const state = {
   inputValue: '',
   rssIsValid: true,
-  listAddRssNews: [],
+  listAddRssNews: {},
+  posts:[],
   feedbackRss: '',
 }
 export default state

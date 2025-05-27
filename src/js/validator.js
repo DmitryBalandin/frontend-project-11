@@ -22,7 +22,6 @@ const validator = (inputValue, listAddRssNews, i18) => {
   })
   return urlShema.validate({ url: inputValue }, { abortEarly: false })
     .then((e) => {
-      
       // const message = i18.t('success')
       // watchedObject.listAddRssNews.push(e.url)
       // watchedObject.feedbackRss = message;

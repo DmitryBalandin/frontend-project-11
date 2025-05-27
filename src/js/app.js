@@ -3,6 +3,7 @@ import validator from './validator.js';
 import state from './state.js';
 import queryRss from './queryRss.js';
 import parserRss from './parser.js';
+import uniqueId from 'lodash.uniqueid';
 
 export default (i18) => {
   const form = document.querySelector('form.rss-form')
@@ -11,7 +12,7 @@ export default (i18) => {
   form.addEventListener('submit', (e) => {
     const inputValue = input.value;
     e.preventDefault()
-    validator(inputValue, state.listAddRssNews, i18)
+    validator(inputValue, Object.values(state.listAddRssNews).map(value => value.linkFeed), i18)
       .then((value) => {
         return queryRss(value)
       })
@@ -19,13 +20,15 @@ export default (i18) => {
         return parserRss(value)
       })
       .then((data) =>{
-        console.log(data);
         const message = i18.t('success')
-        watchedObject.listAddRssNews.push(inputValue)
+        const id = uniqueId();
+        const posts = data.posts.map((post) => {return {...post, id}});
+        watchedObject.listAddRssNews = { [id]:{...data.feed, linkFeed:inputValue, id,}, ...state.listAddRssNews, }
         watchedObject.feedbackRss = message;
         watchedObject.rssIsValid = true
         watchedObject.inputValue = '';
-        console.log(watchedObject);
+        watchedObject.posts = [...posts, ...state.posts]
+        console.log(state,id);
       })
       .catch((e) => {
         const message = i18.t(e.message.key);
@@ -38,3 +41,6 @@ export default (i18) => {
   })
 }
 // 'https://buzzfeed.com/world.xml'
+//https://thecipherbrief.com/feed
+
+// https://aljazeera.com/xml/rss/all.xml

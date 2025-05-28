@@ -1,13 +1,13 @@
 import onChange from 'on-change'
 import state from './state'
-import { renderErrors, renderFeeds } from './view'
+import { renderErrors,  renderMain } from './view'
 
 export const watchedObject = onChange(state, function (path, value, previousValue, applyData) {
   console.log('watcher', path);
 
   renderErrors(state)
-  if (path === 'listAddRssNews') {
-    renderFeeds(Object.values(state.listAddRssNews))
+  if (path === 'listAddRssNews' || path === 'posts') {
+    renderMain(Object.values(state.listAddRssNews), state.posts)
   }
 })
 

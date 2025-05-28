@@ -7,6 +7,6 @@ export default {
       network: 'Нет доступа к интернету',
       rssIsNotValid: 'Ресурс не содержит валидный RSS',
      },
-     success:'RSS успешно загруженно',
+     success:'RSS успешно загружен',
   }
 }

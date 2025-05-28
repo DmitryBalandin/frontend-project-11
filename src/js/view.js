@@ -18,15 +18,66 @@ export const renderErrors = (state) => {
   };
   input.value = state.inputValue;
 }
+function createFeeds(feeds) {
+  const feedsElements = feeds.map((feed) => {
+    return `<li class="list-group-item border-0 border-end-0">
+              <h3 class="h6 m-0">${feed.title}</h3>
+              <p class="m-0 small text-black-50">${feed.description}</p>
+            </li>`
+  })
+  return feedsElements.reverse().join('');
+}
 
-export const renderFeeds = (feeds) => {
-  if(feeds.length === 0) return;
-  const body = document.querySelector('body'); 
-  const sectionMain = document.createElement('section');
-  sectionMain.classList.add(...['container-fluid', 'container-xxl', 'p-5']);
-  sectionMain.innerHTML = "asdasdasda";
-  body.append(sectionMain);
-  console.log(feeds);
+function createPosts(posts){
+  const postsElements = posts.map((post) =>{
+    return `<li class="list-group-item d-flex justify-content-between align-items-start border-0 border-end-0">
+            <a href="${post.link}" class="fw-bold" data-id="12" target="_blank" rel="noopener noreferrer">
+              ${post.title}
+            </a>
+            <button type="button" class="btn btn-outline-primary btn-sm" data-id="12" data-bs-toggle="modal" data-bs-target="#modal">
+              Просмотр
+            </button>
+          </li>`
+  })
+  return postsElements.join('');
+}
+
+
+export const renderMain = (feeds, posts) => {
+  if (feeds.length === 0) return;
+  const body = document.querySelector('body');
+  let sectionMain = body.querySelector('section.container-fluid.container-xxl.p-5');
+  if (!sectionMain) {
+    sectionMain = document.createElement('section');
+    sectionMain.classList.add(...['container-fluid', 'container-xxl', 'p-5']);
+    
+    body.append(sectionMain);
+  }
+  console.log(posts)
+  sectionMain.innerHTML = ` <div class='row'>
+    <div class='col-md-10 col-lg-8 order-1 mx-auto posts'>
+      <div class='card border-0'>
+        <div class="card-body">
+          <h2 class="card-title h4">
+            Посты
+          </h2>
+        </div>
+        <ul class="list-group border-0 rounded-0">
+          ${createPosts(posts)}
+        </ul>
+      </div>
+    </div>
+    <div class="col-md-10 col-lg-4 mx-auto order-0 order-lg-1 feeds">
+      <div class="card border-0">
+        <div class="card-body">
+          <h2 class="card-title h4">Фиды</h2>
+        </div>
+        <ul class="list-group border-0 rounded-0">
+          ${createFeeds(feeds)}
+        </ul>
+      </div>
+    </div>
+  </div>`
 }
 
 {/* <section class='container-fluid container-xxl p-5'>

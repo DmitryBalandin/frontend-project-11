@@ -23,12 +23,11 @@ export default (i18) => {
         const message = i18.t('success')
         const id = uniqueId();
         const posts = data.posts.map((post) => {return {...post, id}});
-        watchedObject.listAddRssNews = { [id]:{...data.feed, linkFeed:inputValue, id,}, ...state.listAddRssNews, }
+        watchedObject.listAddRssNews = {  [id]:{...data.feed, linkFeed:inputValue, id,},...state.listAddRssNews, }
         watchedObject.feedbackRss = message;
         watchedObject.rssIsValid = true
         watchedObject.inputValue = '';
         watchedObject.posts = [...posts, ...state.posts]
-        console.log(state,id);
       })
       .catch((e) => {
         const message = i18.t(e.message.key);

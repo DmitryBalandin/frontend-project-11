@@ -10,6 +10,7 @@ export default (i18) => {
   const button = document.querySelector('button[type="submit"]')
   const input = document.querySelector('#url-input')
   form.addEventListener('click', (e) => {
+    console.log('sasasa');
     const inputValue = input.value;
     e.preventDefault()
     validator(inputValue, Object.values(state.listAddRssNews).map(value => value.linkFeed), i18)

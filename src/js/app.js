@@ -22,7 +22,10 @@ export default (i18) => {
       .then((data) => {
         const message = i18.t('success')
         const id = uniqueId();
-        const posts = data.posts.map((post) => { return { ...post, id } });
+        const posts = data.posts.map((post) => {
+          const id = uniqueId();
+          return { ...post, id }
+        });
         watchedObject.listAddRssNews = { [id]: { ...data.feed, linkFeed: inputValue, id, }, ...state.listAddRssNews, }
         watchedObject.feedbackRss = message;
         watchedObject.rssIsValid = true
@@ -40,31 +43,54 @@ export default (i18) => {
         watchedObject.inputValue = inputValue;
 
       })
-
-
-
   })
 }
 
 function update() {
   const arrayUrslRss = Object.values(watchedObject.listAddRssNews).map(value => value.linkFeed);
-  console.log(arrayUrslRss);
   Promise.allSettled(arrayUrslRss.map(url => queryRss(url)))
     .then(results => {
       return results.map((result) => {
         if (result.status == "fulfilled") {
           return parserRss(result.value)
-          // new Promise(() => { return parserRss(result.value) })
-          //   .then((value) => console.log(value));
         }
       })
     })
-    .then((result) => Promise.allSettled(result.map(({feed,posts}) =>{
-      console.log(feed,posts)
+    .then((result) => Promise.allSettled(result.map(({ feed, posts }) => {
+      const postsLinks = state.posts.map(({ link }) => link)
+      const newPosts = posts.filter(({ link }) => !postsLinks.includes(link));
+      if (newPosts.length !== 0) {
+        const postsWithId = newPosts.map((post) => {
+          const id = uniqueId();
+          return { ...post, id }
+        });
+        watchedObject.posts = [...postsWithId, ...state.posts];
+      }
     }))
     );
-  setTimeout(() => update(), 2000)
-}
+  setTimeout(() => update(), 5000)
+};
+
+const exampleModal = document.getElementById('modal')
+modal.addEventListener('show.bs.modal', function (event) {
+  const button = event.relatedTarget;
+  // const link = button.previousElementSibling;
+  // link.addEventListener('click', (e) =>{
+  //   e.preventDefault();
+  //   console.log('Hello');
+  // })
+  // console.log(link);
+  const buttonId = button.dataset.id;
+  const [feed] = state.posts.filter(({ id }) => buttonId === id);
+  const modalTitle = exampleModal.querySelector('.modal-title');
+  const modalDescription = exampleModal.querySelector('.modal-body');
+  const modalLink = exampleModal.querySelector('.btn.btn-primary.full-article');
+  modalTitle.textContent = feed.title;
+  modalDescription.textContent = feed.description;
+  modalLink.setAttribute('href', feed.link);
+  watchedObject.uiPost = [...watchedObject.uiPost, buttonId]
+  console.log(state.uiPost);
+})
 // 'https://buzzfeed.com/world.xml'
 //https://thecipherbrief.com/feed
 

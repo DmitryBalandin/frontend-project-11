@@ -6,8 +6,8 @@ export const watchedObject = onChange(state, function (path, value, previousValu
   console.log('watcher', path);
 
   renderErrors(state)
-  if (path === 'listAddRssNews' || path === 'posts') {
-    renderMain(Object.values(state.listAddRssNews), state.posts)
+  if (path === 'listAddRssNews' || path === 'posts' || path === 'uiPost') {
+    renderMain(Object.values(state.listAddRssNews), state.posts,state.uiPost)
   }
 })
 

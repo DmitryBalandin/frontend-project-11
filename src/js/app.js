@@ -9,7 +9,7 @@ export default (i18) => {
   const form = document.querySelector('form.rss-form')
   const button = document.querySelector('button[type="submit"]')
   const input = document.querySelector('#url-input')
-  form.addEventListener('click', (e) => {
+  button.addEventListener('click', (e) => {
     console.log('sasasa');
     const inputValue = input.value;
     e.preventDefault()

@@ -9,7 +9,7 @@ export default (i18) => {
   const form = document.querySelector('form.rss-form')
   const button = document.querySelector('button[type="submit"]')
   const input = document.querySelector('#url-input')
-  button.addEventListener('click', (e) => {
+  form.addEventListener('click', (e) => {
     const inputValue = input.value;
     e.preventDefault()
     validator(inputValue, Object.values(state.listAddRssNews).map(value => value.linkFeed), i18)

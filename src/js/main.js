@@ -11,8 +11,7 @@ i118n.init({
   lng: 'ru',
   debug: true,
   resources: {
-    ru,
-    en
+    ru
   }
 }).then(function(t) {
   // initialized and ready to go!

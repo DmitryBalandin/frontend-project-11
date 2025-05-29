@@ -68,7 +68,7 @@ function update() {
       }
     }))
     );
-  setTimeout(() => update(), 5000)
+  setTimeout(() => update(), 3000)
 };
 
 const exampleModal = document.getElementById('modal')

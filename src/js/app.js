@@ -7,7 +7,7 @@ import uniqueId from 'lodash.uniqueid';
 
 export default (i18) => {
   const form = document.querySelector('form.rss-form')
-  const button = document.querySelector('button[type="submit"]')
+  const button = document.querySelector('button[type="button"]')
   const input = document.querySelector('#url-input')
   button.addEventListener('click', (e) => {
     console.log('sasasa');

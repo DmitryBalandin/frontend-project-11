@@ -7,22 +7,13 @@ const getProxyUrl = (url) => {
   return proxyUrl.toString()
 }
 export default (url) => {
-  // const urlWithSettings = `https://allorigins.hexlet.app/disableCache=true&get?url=${encodeURIComponent(url)}`;
-  const urlWithSettings = getProxyUrl(url)
-  
+  const urlWithSettings = getProxyUrl(url) 
   return axios.get(urlWithSettings)
-    .then(response => {
+    .then((response) => {
       if (response.status === 200 ) return response.data.contents
       throw new Error('Network response was not ok.')
     })
-    .catch(e => {
+    .catch(() => {
       throw new ValidationError({ key: 'errors.network' })
-    })
-   
+    })  
 }
-
-// https://thecipherbrief.com/feed
-
-// https://buzzfeed.com/world.xml
-
-// https://aljazeera.com/xml/rss/all.xml

@@ -1,6 +1,4 @@
 import '../scss/styles.scss'
-
-// Import all of Bootstrap’s JS
 import * as bootstrap from 'bootstrap'
 import i18next from 'i18next'
 import app from './app'
@@ -12,8 +10,9 @@ i118n.init({
   debug: true,
   resources: {
     ru,
+    en
   },
-}).then(function(t) {
+}).then(function() {
   // initialized and ready to go!
   app(i118n)
 })

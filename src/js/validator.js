@@ -1,8 +1,6 @@
-import { object, string, setLocale, ValidationError } from 'yup'
-import { watchedObject } from './watcher'
-import state from './state'
+import { object, string, setLocale } from 'yup'
 
-const validator = (inputValue, listAddRssNews, i18) => {
+const validator = (inputValue, listAddRssNews) => {
   setLocale({
     string: {
       url: () => ({ key: 'errors.url' }),
@@ -11,7 +9,7 @@ const validator = (inputValue, listAddRssNews, i18) => {
       notOneOf: () => ({ key: 'errors.existOnList' }),
       required: () => ({ key: 'errors.empty' }),
     },
-  })
+  });
 
   const urlShema = object({
     url: string()
@@ -21,22 +19,9 @@ const validator = (inputValue, listAddRssNews, i18) => {
       .notOneOf(listAddRssNews),
   })
   return urlShema.validate({ url: inputValue }, { abortEarly: false })
-    .then((e) => {
-      // const message = i18.t('success')
-      // watchedObject.listAddRssNews.push(e.url)
-      // watchedObject.feedbackRss = message;
-      // watchedObject.rssIsValid = true
-      // watchedObject.inputValue = '';
-      return inputValue
+    .then(() => {
+      return inputValue;
     })
-    // .catch((e) => {
-    //   const message = i18.t(e.message.key);
-    //   watchedObject.feedbackRss = message;
-    //   watchedObject.rssIsValid = false;
-    //   watchedObject.inputValue = inputValue;
-    //   throw new Error('not validn url');
-    // })
-
 }
 
 export default validator

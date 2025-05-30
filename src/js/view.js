@@ -1,4 +1,3 @@
-
 export const renderErrors = (state) => {
   const input = document.querySelector('#url-input')
   const feedback = document.querySelector('p.feedback')
@@ -8,7 +7,6 @@ export const renderErrors = (state) => {
     feedback.classList.add('text-danger')
     feedback.innerHTML = state.feedbackRss
     console.log('class text-danger')
-    // class text-danger
   }
   if (state.rssIsValid) {
     input.classList.remove('is-invalid')
@@ -16,7 +14,6 @@ export const renderErrors = (state) => {
     feedback.classList.remove('text-danger')
     feedback.classList.add('text-success')
     console.log('class tex-sucsees')
-    //class text-success
   }
   input.value = state.inputValue
   console.log('class render-errorrs')
@@ -53,7 +50,6 @@ export const renderMain = (feeds, posts, uiPosts) => {
   if (!sectionMain) {
     sectionMain = document.createElement('section')
     sectionMain.classList.add(...['container-fluid', 'container-xxl', 'p-5'])
-
     body.append(sectionMain)
   }
   

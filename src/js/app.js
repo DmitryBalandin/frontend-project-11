@@ -6,17 +6,14 @@ import parserRss from './parser.js'
 import uniqueId from 'lodash.uniqueid'
 
 export default (i18) => {
-  const form = document.querySelector('form.rss-form')
   const button = document.querySelector('button[type="submit"]')
   const input = document.querySelector('#url-input')
   button.addEventListener('click', (e) => {
     e.preventDefault()
     console.log('click', input.value)
     const inputValue = input.value
-    validator(inputValue, Object.values(state.listAddRssNews).map(value => value.linkFeed), i18)
+    validator(inputValue, Object.values(state.listAddRssNews).map(value => value.linkFeed))
       .then((value) => {
-        
-        console.log('query', value)
         return queryRss(value)
       })
       .then((value) => {
@@ -47,7 +44,6 @@ export default (i18) => {
         watchedObject.feedbackRss = message
         watchedObject.rssIsValid = false
         watchedObject.inputValue = inputValue
-
       })
   })
 }
@@ -62,7 +58,7 @@ function update() {
         }
       })
     })
-    .then((result) => Promise.allSettled(result.map(({ feed, posts }) => {
+    .then((result) => Promise.allSettled(result.map(({ posts }) => {
       const postsLinks = state.posts.map(({ link }) => link)
       const newPosts = posts.filter(({ link }) => !postsLinks.includes(link))
       if (newPosts.length !== 0) {
@@ -80,12 +76,6 @@ function update() {
 const exampleModal = document.getElementById('modal')
 modal.addEventListener('show.bs.modal', function (event) {
   const button = event.relatedTarget
-  // const link = button.previousElementSibling;
-  // link.addEventListener('click', (e) =>{
-  //   e.preventDefault();
-  //   console.log('Hello');
-  // })
-  // console.log(link);
   const buttonId = button.dataset.id
   const [feed] = state.posts.filter(({ id }) => buttonId === id)
   const modalTitle = exampleModal.querySelector('.modal-title')

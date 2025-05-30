@@ -1,5 +1,6 @@
 import '../scss/styles.scss'
 import * as bootstrap from 'bootstrap'
+
 import i18next from 'i18next'
 import app from './app'
 import ru from './locales/ru'

@@ -75,7 +75,7 @@ function update() {
 
 const exampleModal = document.getElementById('modal')
 
-modal.addEventListener('show.bs.modal', function (event) {
+exampleModal.addEventListener('show.bs.modal', function (event) {
   const button = event.relatedTarget
   const buttonId = button.dataset.id
   const [feed] = state.posts.filter(({ id }) => buttonId === id)

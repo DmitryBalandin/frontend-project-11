@@ -7,8 +7,12 @@ export default (url) => {
     .then(response => {
       if (response.status === 200 ) return response.data.contents
       throw new Error('Network response was not ok.')
-    }).catch(e => {
+    })
+    .catch(e => {
       throw new ValidationError({ key: 'errors.network'});
+    })
+    .catch(e =>{
+      
     })
    
 };

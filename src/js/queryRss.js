@@ -18,9 +18,7 @@ export default (url) => {
     .catch(e => {
       throw new ValidationError({ key: 'errors.network'});
     })
-    .catch(e =>{
-      
-    })
+    
    
 };
 

@@ -8,7 +8,7 @@ const getProxyUrl = (url) => {
 }
 export default (url) => {
   const urlWithSettings = getProxyUrl(url)
-    return axios.get(urlWithSettings)
+  return axios.get(urlWithSettings)
     .then((response) => {
       if (response.status === 200) return response.data.contents
       throw new Error('Network response was not ok.')
@@ -16,4 +16,4 @@ export default (url) => {
     .catch(() => {
       throw new ValidationError({ key: 'errors.network' })
     })
-  }
+}

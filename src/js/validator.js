@@ -9,7 +9,7 @@ const validator = (inputValue, listAddRssNews) => {
       notOneOf: () => ({ key: 'errors.existOnList' }),
       required: () => ({ key: 'errors.empty' }),
     },
-  });
+  })
 
   const urlShema = object({
     url: string()
@@ -20,7 +20,7 @@ const validator = (inputValue, listAddRssNews) => {
   })
   return urlShema.validate({ url: inputValue }, { abortEarly: false })
     .then(() => {
-      return inputValue;
+      return inputValue
     })
 }
 

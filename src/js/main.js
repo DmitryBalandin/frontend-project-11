@@ -10,9 +10,9 @@ i118n.init({
   debug: true,
   resources: {
     ru,
-    en
+    en,
   },
-}).then(function() {
+}).then(function () {
   // initialized and ready to go!
   app(i118n)
 })

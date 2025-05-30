@@ -7,13 +7,13 @@ const getProxyUrl = (url) => {
   return proxyUrl.toString()
 }
 export default (url) => {
-  const urlWithSettings = getProxyUrl(url) 
-  return axios.get(urlWithSettings)
+  const urlWithSettings = getProxyUrl(url)
+    return axios.get(urlWithSettings)
     .then((response) => {
-      if (response.status === 200 ) return response.data.contents
+      if (response.status === 200) return response.data.contents
       throw new Error('Network response was not ok.')
     })
     .catch(() => {
       throw new ValidationError({ key: 'errors.network' })
-    })  
-}
+    })
+  }

@@ -52,7 +52,6 @@ export const renderMain = (feeds, posts, uiPosts) => {
     sectionMain.classList.add(...['container-fluid', 'container-xxl', 'p-5'])
     body.append(sectionMain)
   }
-  
   sectionMain.innerHTML = ` <div class='row'>
     <div class='col-md-10 col-lg-8 order-1 mx-auto posts'>
       <div class='card border-0'>

@@ -51,14 +51,14 @@ export default (i18) => {
 function update() {
   const arrayUrslRss = Object.values(watchedObject.listAddRssNews).map(value => value.linkFeed)
   Promise.allSettled(arrayUrslRss.map(url => queryRss(url)))
-    .then(results => {
+    .then((results) => {
       return results.map((result) => {
         if (result.status == 'fulfilled') {
           return parserRss(result.value)
         }
       })
     })
-    .then((result) => Promise.allSettled(result.map(({ posts }) => {
+    .then(result => Promise.allSettled(result.map(({ posts }) => {
       const postsLinks = state.posts.map(({ link }) => link)
       const newPosts = posts.filter(({ link }) => !postsLinks.includes(link))
       if (newPosts.length !== 0) {
@@ -74,6 +74,7 @@ function update() {
 }
 
 const exampleModal = document.getElementById('modal')
+
 modal.addEventListener('show.bs.modal', function (event) {
   const button = event.relatedTarget
   const buttonId = button.dataset.id
@@ -88,6 +89,6 @@ modal.addEventListener('show.bs.modal', function (event) {
   console.log(state.uiPost)
 })
 // 'https://buzzfeed.com/world.xml'
-//https://thecipherbrief.com/feed
+// https://thecipherbrief.com/feed
 
 // https://aljazeera.com/xml/rss/all.xml

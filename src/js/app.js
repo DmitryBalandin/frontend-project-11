@@ -10,17 +10,20 @@ export default (i18) => {
   const button = document.querySelector('button[type="submit"]')
   const input = document.querySelector('#url-input')
   button.addEventListener('click', (e) => {
-    console.log('sasasa');
-    const inputValue = input.value;
     e.preventDefault()
+    console.log('click');
+    const inputValue = input.value;
     validator(inputValue, Object.values(state.listAddRssNews).map(value => value.linkFeed), i18)
       .then((value) => {
+        console.log('query');
         return queryRss(value)
       })
       .then((value) => {
+        console.log('parse');
         return parserRss(value)
       })
       .then((data) => {
+        console.log('success');
         const message = i18.t('success')
         const id = uniqueId();
         const posts = data.posts.map((post) => {
@@ -38,6 +41,7 @@ export default (i18) => {
         }
       })
       .catch((e) => {
+        console.log('catch')
         const message = i18.t(e.message.key);
         watchedObject.feedbackRss = message;
         watchedObject.rssIsValid = false;

@@ -5,7 +5,7 @@ export default (url) => {
   //  fetch(`https://allorigins.hexlet.app/?url=${encodeURIComponent(url)}`)
   return axios.get(urlWithSettings)
     .then(response => {
-      if (response.status === 200 || response.status === 500) return response.data.contents
+      if (response.status === 200 ) return response.data.contents
       throw new Error('Network response was not ok.')
     }).catch(e => {
       throw new ValidationError({ key: 'errors.network'});

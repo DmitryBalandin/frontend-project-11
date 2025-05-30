@@ -7,6 +7,7 @@ export const renderErrors = (state) => {
     feedback.classList.remove('text-success')
     feedback.classList.add('text-danger')
     feedback.innerHTML = state.feedbackRss;
+    console.log('class text-danger')
     // class text-danger
   };
   if (state.rssIsValid) {
@@ -14,9 +15,11 @@ export const renderErrors = (state) => {
     feedback.innerHTML = state.feedbackRss;
     feedback.classList.remove('text-danger')
     feedback.classList.add('text-success')
+    console.log('class tex-sucsees')
     //class text-success
   };
   input.value = state.inputValue;
+  console.log('class render-errorrs')
 }
 function createFeeds(feeds) {
   const feedsElements = feeds.map((feed) => {

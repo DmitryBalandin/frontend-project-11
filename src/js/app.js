@@ -4,7 +4,7 @@ import state from './state.js'
 import queryRss from './queryRss.js'
 import parserRss from './parser.js'
 import uniqueId from 'lodash.uniqueid'
-
+import * as bootstrap from 'bootstrap'
 export default (i18) => {
   const button = document.querySelector('button[type="submit"]')
   const input = document.querySelector('#url-input')
@@ -73,8 +73,11 @@ function update() {
   setTimeout(() => update(), 3000)
 }
 
+// const exampleModal = document.getElementById('modal')
 const exampleModal = document.getElementById('modal')
-
+// const exampleModal  = bootstrap.Modal.getInstance(modal)
+const myModal = new bootstrap.Modal(document.getElementById('modal'))
+myModal.hide()
 exampleModal.addEventListener('show.bs.modal', function (event) {
   const button = event.relatedTarget
   const buttonId = button.dataset.id

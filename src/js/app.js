@@ -11,11 +11,12 @@ export default (i18) => {
   const input = document.querySelector('#url-input')
   button.addEventListener('click', (e) => {
     e.preventDefault()
-    console.log('click');
+    console.log('click', input.value);
     const inputValue = input.value;
     validator(inputValue, Object.values(state.listAddRssNews).map(value => value.linkFeed), i18)
       .then((value) => {
-        console.log('query');
+        
+        console.log('query', value);
         return queryRss(value)
       })
       .then((value) => {

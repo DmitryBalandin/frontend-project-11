@@ -57,7 +57,7 @@ export const renderMain = (feeds, posts, uiPosts) => {
 
     body.append(sectionMain);
   }
-  console.log(posts)
+  
   sectionMain.innerHTML = ` <div class='row'>
     <div class='col-md-10 col-lg-8 order-1 mx-auto posts'>
       <div class='card border-0'>

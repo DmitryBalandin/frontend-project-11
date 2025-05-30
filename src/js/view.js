@@ -1,24 +1,24 @@
 
 export const renderErrors = (state) => {
-  const input = document.querySelector('#url-input');
-  const feedback = document.querySelector('p.feedback');
+  const input = document.querySelector('#url-input')
+  const feedback = document.querySelector('p.feedback')
   if (!state.rssIsValid) {
-    input.classList.add('is-invalid');
+    input.classList.add('is-invalid')
     feedback.classList.remove('text-success')
     feedback.classList.add('text-danger')
-    feedback.innerHTML = state.feedbackRss;
+    feedback.innerHTML = state.feedbackRss
     console.log('class text-danger')
     // class text-danger
-  };
+  }
   if (state.rssIsValid) {
-    input.classList.remove('is-invalid');
-    feedback.innerHTML = state.feedbackRss;
+    input.classList.remove('is-invalid')
+    feedback.innerHTML = state.feedbackRss
     feedback.classList.remove('text-danger')
     feedback.classList.add('text-success')
     console.log('class tex-sucsees')
     //class text-success
-  };
-  input.value = state.inputValue;
+  }
+  input.value = state.inputValue
   console.log('class render-errorrs')
 }
 function createFeeds(feeds) {
@@ -28,7 +28,7 @@ function createFeeds(feeds) {
               <p class="m-0 small text-black-50">${feed.description}</p>
             </li>`
   })
-  return feedsElements.reverse().join('');
+  return feedsElements.reverse().join('')
 }
 
 function createPosts(posts, uiPosts) {
@@ -43,19 +43,18 @@ function createPosts(posts, uiPosts) {
             </button>
           </li>`
   })
-  return postsElements.join('');
+  return postsElements.join('')
 }
 
-
 export const renderMain = (feeds, posts, uiPosts) => {
-  if (feeds.length === 0) return;
-  const body = document.querySelector('body');
-  let sectionMain = body.querySelector('section.container-fluid.container-xxl.p-5');
+  if (feeds.length === 0) return
+  const body = document.querySelector('body')
+  let sectionMain = body.querySelector('section.container-fluid.container-xxl.p-5')
   if (!sectionMain) {
-    sectionMain = document.createElement('section');
-    sectionMain.classList.add(...['container-fluid', 'container-xxl', 'p-5']);
+    sectionMain = document.createElement('section')
+    sectionMain.classList.add(...['container-fluid', 'container-xxl', 'p-5'])
 
-    body.append(sectionMain);
+    body.append(sectionMain)
   }
   
   sectionMain.innerHTML = ` <div class='row'>
@@ -83,4 +82,3 @@ export const renderMain = (feeds, posts, uiPosts) => {
     </div>
   </div>`
 }
-

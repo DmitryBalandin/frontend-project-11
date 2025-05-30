@@ -1,6 +1,6 @@
 const state = {
   inputValue: '',
-  rssIsValid:'' ,
+  rssIsValid:'',
   listAddRssNews: {},
   posts:[],
   feedbackRss: '',

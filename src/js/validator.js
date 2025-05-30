@@ -1,6 +1,6 @@
 import { object, string, setLocale, ValidationError } from 'yup'
 import { watchedObject } from './watcher'
-import state from './state';
+import state from './state'
 
 const validator = (inputValue, listAddRssNews, i18) => {
   setLocale({
@@ -11,7 +11,7 @@ const validator = (inputValue, listAddRssNews, i18) => {
       notOneOf: () => ({ key: 'errors.existOnList' }),
       required: () => ({ key: 'errors.empty' }),
     },
-  });
+  })
 
   const urlShema = object({
     url: string()
@@ -27,7 +27,7 @@ const validator = (inputValue, listAddRssNews, i18) => {
       // watchedObject.feedbackRss = message;
       // watchedObject.rssIsValid = true
       // watchedObject.inputValue = '';
-      return inputValue;
+      return inputValue
     })
     // .catch((e) => {
     //   const message = i18.t(e.message.key);

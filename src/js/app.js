@@ -1,9 +1,9 @@
 import { watchedObject } from './watcher.js'
-import validator from './validator.js';
-import state from './state.js';
-import queryRss from './queryRss.js';
-import parserRss from './parser.js';
-import uniqueId from 'lodash.uniqueid';
+import validator from './validator.js'
+import state from './state.js'
+import queryRss from './queryRss.js'
+import parserRss from './parser.js'
+import uniqueId from 'lodash.uniqueid'
 
 export default (i18) => {
   const form = document.querySelector('form.rss-form')
@@ -11,91 +11,91 @@ export default (i18) => {
   const input = document.querySelector('#url-input')
   button.addEventListener('click', (e) => {
     e.preventDefault()
-    console.log('click', input.value);
-    const inputValue = input.value;
+    console.log('click', input.value)
+    const inputValue = input.value
     validator(inputValue, Object.values(state.listAddRssNews).map(value => value.linkFeed), i18)
       .then((value) => {
         
-        console.log('query', value);
+        console.log('query', value)
         return queryRss(value)
       })
       .then((value) => {
-        console.log('parse');
+        console.log('parse')
         return parserRss(value)
       })
       .then((data) => {
-        console.log('success');
+        console.log('success')
         const message = i18.t('success')
-        const id = uniqueId();
+        const id = uniqueId()
         const posts = data.posts.map((post) => {
-          const id = uniqueId();
+          const id = uniqueId()
           return { ...post, id }
-        });
-        watchedObject.listAddRssNews = { [id]: { ...data.feed, linkFeed: inputValue, id, }, ...state.listAddRssNews, }
-        watchedObject.feedbackRss = message;
+        })
+        watchedObject.listAddRssNews = { [id]: { ...data.feed, linkFeed: inputValue, id }, ...state.listAddRssNews }
+        watchedObject.feedbackRss = message
         watchedObject.rssIsValid = true
-        watchedObject.inputValue = '';
-        watchedObject.posts = [...posts, ...state.posts];
-        const arrayRss = Object.values(watchedObject.listAddRssNews).map(value => value.linkFeed);
+        watchedObject.inputValue = ''
+        watchedObject.posts = [...posts, ...state.posts]
+        const arrayRss = Object.values(watchedObject.listAddRssNews).map(value => value.linkFeed)
         if (arrayRss.length === 1) {
           update()
         }
       })
       .catch((e) => {
-        console.log('catch', e.message.key);
-        const message = i18.t(e.message.key);
-        watchedObject.feedbackRss = message;
-        watchedObject.rssIsValid = false;
-        watchedObject.inputValue = inputValue;
+        console.log('catch', e.message.key)
+        const message = i18.t(e.message.key)
+        watchedObject.feedbackRss = message
+        watchedObject.rssIsValid = false
+        watchedObject.inputValue = inputValue
 
       })
   })
 }
 
 function update() {
-  const arrayUrslRss = Object.values(watchedObject.listAddRssNews).map(value => value.linkFeed);
+  const arrayUrslRss = Object.values(watchedObject.listAddRssNews).map(value => value.linkFeed)
   Promise.allSettled(arrayUrslRss.map(url => queryRss(url)))
     .then(results => {
       return results.map((result) => {
-        if (result.status == "fulfilled") {
+        if (result.status == 'fulfilled') {
           return parserRss(result.value)
         }
       })
     })
     .then((result) => Promise.allSettled(result.map(({ feed, posts }) => {
       const postsLinks = state.posts.map(({ link }) => link)
-      const newPosts = posts.filter(({ link }) => !postsLinks.includes(link));
+      const newPosts = posts.filter(({ link }) => !postsLinks.includes(link))
       if (newPosts.length !== 0) {
         const postsWithId = newPosts.map((post) => {
-          const id = uniqueId();
+          const id = uniqueId()
           return { ...post, id }
-        });
-        watchedObject.posts = [...postsWithId, ...state.posts];
+        })
+        watchedObject.posts = [...postsWithId, ...state.posts]
       }
-    }))
-    );
+    })),
+    )
   setTimeout(() => update(), 3000)
-};
+}
 
 const exampleModal = document.getElementById('modal')
 modal.addEventListener('show.bs.modal', function (event) {
-  const button = event.relatedTarget;
+  const button = event.relatedTarget
   // const link = button.previousElementSibling;
   // link.addEventListener('click', (e) =>{
   //   e.preventDefault();
   //   console.log('Hello');
   // })
   // console.log(link);
-  const buttonId = button.dataset.id;
-  const [feed] = state.posts.filter(({ id }) => buttonId === id);
-  const modalTitle = exampleModal.querySelector('.modal-title');
-  const modalDescription = exampleModal.querySelector('.modal-body');
-  const modalLink = exampleModal.querySelector('.btn.btn-primary.full-article');
-  modalTitle.textContent = feed.title;
-  modalDescription.textContent = feed.description;
-  modalLink.setAttribute('href', feed.link);
+  const buttonId = button.dataset.id
+  const [feed] = state.posts.filter(({ id }) => buttonId === id)
+  const modalTitle = exampleModal.querySelector('.modal-title')
+  const modalDescription = exampleModal.querySelector('.modal-body')
+  const modalLink = exampleModal.querySelector('.btn.btn-primary.full-article')
+  modalTitle.textContent = feed.title
+  modalDescription.textContent = feed.description
+  modalLink.setAttribute('href', feed.link)
   watchedObject.uiPost = [...watchedObject.uiPost, buttonId]
-  console.log(state.uiPost);
+  console.log(state.uiPost)
 })
 // 'https://buzzfeed.com/world.xml'
 //https://thecipherbrief.com/feed

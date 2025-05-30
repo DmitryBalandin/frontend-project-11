@@ -4,7 +4,7 @@ const parserRss = (data) => {
   const parser = new DOMParser();
   const resultParse = parser.parseFromString(data, "text/xml");
   const rss = resultParse.querySelector('rss')
-  if(!rss) throw new ValidationError({key:'errors.rssIsNotValid'});
+  // if(!rss) throw new ValidationError({key:'errors.rssIsNotValid'});
   const title = resultParse.querySelector('title').textContent;
   const description = resultParse.querySelector('description').textContent;
   const items = resultParse.querySelectorAll('item');

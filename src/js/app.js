@@ -42,7 +42,7 @@ export default (i18) => {
         }
       })
       .catch((e) => {
-        console.log('catch')
+        console.log('catch', e.message.key);
         const message = i18.t(e.message.key);
         watchedObject.feedbackRss = message;
         watchedObject.rssIsValid = false;

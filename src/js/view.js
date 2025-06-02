@@ -102,8 +102,7 @@ function handleProcessState(element, processState) {
 }
 
 const exampleModal = document.getElementById('modal')
-const myModal = new bootstrap.Modal(document.getElementById('modal'))
-myModal.hide()
+
 exampleModal.addEventListener('show.bs.modal', function (event) {
   const button = event.relatedTarget
   const buttonId = button.dataset.id

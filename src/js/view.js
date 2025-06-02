@@ -1,6 +1,7 @@
 import state from './state'
 import * as bootstrap from 'bootstrap'
 import { watchedObject } from './watcher'
+import i18next from 'i18next'
 export const renderErrors = (state) => {
   const input = document.querySelector('#url-input')
   const feedback = document.querySelector('p.feedback')
@@ -8,17 +9,17 @@ export const renderErrors = (state) => {
     input.classList.add('is-invalid')
     feedback.classList.remove('text-success')
     feedback.classList.add('text-danger')
-    feedback.innerHTML = state.feedbackRss
+    feedback.innerHTML = i18next.t(state.feedbackRss)
     console.log('class text-danger')
   }
   if (state.rssIsValid) {
     input.classList.remove('is-invalid')
-    feedback.innerHTML = state.feedbackRss
+    feedback.innerHTML = i18next.t(state.feedbackRss)
     feedback.classList.remove('text-danger')
     feedback.classList.add('text-success')
     console.log('class tex-sucsees')
   }
-  input.value = state.inputValue
+  // input.value = state.inputValue
   console.log('class render-errorrs')
 }
 function createFeeds(feeds) {
@@ -82,7 +83,6 @@ export const renderMain = (feeds, posts, uiPosts) => {
 }
 
 const exampleModal = document.getElementById('modal')
-// const exampleModal  = bootstrap.Modal.getInstance(modal)
 const myModal = new bootstrap.Modal(document.getElementById('modal'))
 myModal.hide()
 exampleModal.addEventListener('show.bs.modal', function (event) {

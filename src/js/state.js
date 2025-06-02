@@ -1,5 +1,4 @@
 const state = {
-  inputValue: '',
   rssIsValid: '',
   listAddRssNews: {},
   posts: [],

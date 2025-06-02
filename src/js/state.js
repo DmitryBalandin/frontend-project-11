@@ -1,5 +1,6 @@
 const state = {
-  rssIsValid: '',
+  conditionForm: 'empty',
+  processState: 'filling',
   listAddRssNews: {},
   posts: [],
   feedbackRss: '',

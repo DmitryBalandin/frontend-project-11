@@ -5,22 +5,21 @@ import i18next from 'i18next'
 export const renderErrors = (state) => {
   const input = document.querySelector('#url-input')
   const feedback = document.querySelector('p.feedback')
-  if (!state.rssIsValid) {
+  const button = document.querySelector('button[type=submit]')
+  handleProcessState(state.processState, button)
+  if (state.conditionForm === 'error') {
     input.classList.add('is-invalid')
     feedback.classList.remove('text-success')
     feedback.classList.add('text-danger')
     feedback.innerHTML = i18next.t(state.feedbackRss)
-    console.log('class text-danger')
   }
-  if (state.rssIsValid) {
+  if (state.conditionForm === 'success') {
     input.classList.remove('is-invalid')
     feedback.innerHTML = i18next.t(state.feedbackRss)
     feedback.classList.remove('text-danger')
     feedback.classList.add('text-success')
-    console.log('class tex-sucsees')
+    input.value = ''
   }
-  // input.value = state.inputValue
-  console.log('class render-errorrs')
 }
 function createFeeds(feeds) {
   const feedsElements = feeds.map((feed) => {
@@ -34,7 +33,6 @@ function createFeeds(feeds) {
 
 function createPosts(posts, uiPosts) {
   const postsElements = posts.map((post) => {
-    console.log(uiPosts)
     return `<li class="list-group-item d-flex justify-content-between align-items-start border-0 border-end-0">
             <a href="${post.link}" class="${uiPosts.includes(post.id) ? 'fw-normal link-secondary' : 'fw-bold'}" data-id="${post.id}" target="_blank" rel="noopener noreferrer">
               ${post.title}
@@ -80,6 +78,27 @@ export const renderMain = (feeds, posts, uiPosts) => {
       </div>
     </div>
   </div>`
+}
+function handleProcessState(element, processState) {
+  switch (processState) {
+    case 'received':
+      element.disabled = false
+      break
+
+    case 'error':
+      element.disabled = false
+      break
+
+    case 'sending':
+      element.disabled = true
+      break
+
+    case 'filling':
+      element.disabled = false
+      break
+    default:
+      break
+  }
 }
 
 const exampleModal = document.getElementById('modal')

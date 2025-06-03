@@ -46,7 +46,7 @@ function createPosts(posts, uiPosts) {
 }
 
 export const renderMain = (feeds, posts, uiPosts) => {
-  if (feeds.length === 0) return
+  if (feeds.length === 0 ) return
   const body = document.querySelector('body')
   let sectionMain = body.querySelector('section.container-fluid.container-xxl.p-5')
   if (!sectionMain) {

@@ -47,7 +47,7 @@ function createPosts(posts, uiPosts) {
 }
 
 export const renderMain = (feeds, posts, uiPosts) => {
-  if (feeds.length === 0 ) return
+  if (feeds.length === 0) return
   const body = document.querySelector('body')
   let sectionMain = body.querySelector('section.container-fluid.container-xxl.p-5')
   if (!sectionMain) {
@@ -103,7 +103,7 @@ function handleProcessState(element, processState) {
 }
 
 const exampleModal = document.getElementById('modal')
-new bootstrap.Modal(exampleModal);
+new bootstrap.Modal(exampleModal)
 exampleModal.addEventListener('show.bs.modal', function (event) {
   const button = event.relatedTarget
   const buttonId = button.dataset.id

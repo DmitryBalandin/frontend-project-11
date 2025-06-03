@@ -2,7 +2,7 @@ import state from './state'
 import * as bootstrap from 'bootstrap'
 import { watchedObject } from './watcher'
 import i18next from 'i18next'
-// import Modal from 'bootstrap'
+
 export const renderErrors = (state) => {
   const input = document.querySelector('#url-input')
   const feedback = document.querySelector('p.feedback')

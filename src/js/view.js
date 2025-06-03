@@ -2,6 +2,7 @@ import state from './state'
 import * as bootstrap from 'bootstrap'
 import { watchedObject } from './watcher'
 import i18next from 'i18next'
+// import Modal from 'bootstrap'
 export const renderErrors = (state) => {
   const input = document.querySelector('#url-input')
   const feedback = document.querySelector('p.feedback')
@@ -102,7 +103,7 @@ function handleProcessState(element, processState) {
 }
 
 const exampleModal = document.getElementById('modal')
-
+new bootstrap.Modal(exampleModal);
 exampleModal.addEventListener('show.bs.modal', function (event) {
   const button = event.relatedTarget
   const buttonId = button.dataset.id

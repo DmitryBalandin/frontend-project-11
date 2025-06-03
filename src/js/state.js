@@ -4,9 +4,9 @@ const state = {
   listAddRssNews: {},
   posts: [],
   feedbackRss: '',
-  uiState:{
+  uiState: {
     processState: 'filling',
-    posts:[],
+    posts: [],
   },
 }
 export default state

@@ -6,7 +6,6 @@ import parserRss from './parser.js'
 import uniqueId from 'lodash.uniqueid'
 
 export default () => {
-  
   const form = document.querySelector('form')
   form.addEventListener('submit', (e) => {
     e.preventDefault()
@@ -32,7 +31,6 @@ export default () => {
         watchedObject.feedbackRss = message
         watchedObject.uiState.processState = 'received'
         watchedObject.conditionForm = 'success'
-        watchedObject.rssIsValid = true
         watchedObject.uiState.posts = { ...posts.reduce((acc, { id }) => { return { ...acc, [id]: { status: 'not view' } } }, {}), ...state.uiState.posts }
         watchedObject.posts = [...posts, ...state.posts]
       })
@@ -41,13 +39,12 @@ export default () => {
         watchedObject.uiState.processState = 'error'
         watchedObject.conditionForm = 'failed'
         watchedObject.feedbackRss = message
-        watchedObject.rssIsValid = false
       })
   })
-  update()
+ 
 }
 
-function update() {
+export const  update = () => {
   const arrayUrslRss = Object.values(watchedObject.listAddRssNews).map(value => value.linkFeed)
   Promise.allSettled(arrayUrslRss.map(url => queryRss(url)))
     .then((results) => {

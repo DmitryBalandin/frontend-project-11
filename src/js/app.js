@@ -4,8 +4,15 @@ import state from './state.js'
 import queryRss from './queryRss.js'
 import parserRss from './parser.js'
 import uniqueId from 'lodash.uniqueid'
+import i18next from 'i18next'
+import resources from '../js/locales/index'
 
 export default () => {
+  i18next.init({
+    lng: 'ru',
+    resources: resources,
+  })
+  update()
   const form = document.querySelector('form')
   form.addEventListener('submit', (e) => {
     e.preventDefault()
@@ -48,7 +55,7 @@ export default () => {
   })
 }
 
-export const update = () => {
+function update () {
   const arrayUrslRss = Object.values(watchedObject.listAddRssNews).map(value => value.linkFeed)
   Promise.allSettled(arrayUrslRss.map(url => queryRss(url)))
     .then((results) => {

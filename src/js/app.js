@@ -29,14 +29,14 @@ export default () => {
         })
         const uiPosts = posts.reduce((acc, { id }) => {
           return {
-            ...acc, [id]: { status: 'not view' }
+            ...acc, [id]: { status: 'not view' },
           }
         }, {})
         watchedObject.listAddRssNews = { [id]: { ...data.feed, linkFeed: inputValue, id }, ...state.listAddRssNews }
         watchedObject.feedbackRss = message
         watchedObject.uiState.processState = 'received'
         watchedObject.conditionForm = 'success'
-        watchedObject.uiState.posts = {...uiPosts, ...state.uiState.posts}
+        watchedObject.uiState.posts = { ...uiPosts, ...state.uiState.posts }
         watchedObject.posts = [...posts, ...state.posts]
       })
       .catch((e) => {

@@ -6,12 +6,13 @@ import parserRss from './parser.js'
 import uniqueId from 'lodash.uniqueid'
 
 export default () => {
+  
   const form = document.querySelector('form')
   form.addEventListener('submit', (e) => {
+    e.preventDefault()
     const formData = new FormData(form)
     const inputValue = formData.get('url')
-    e.preventDefault()
-    watchedObject.processState = 'filling'
+    watchedObject.uiState.processState = 'filling'
     validator(inputValue, Object.values(state.listAddRssNews).map(value => value.linkFeed))
       .then((value) => {
         watchedObject.processState = 'sending'
@@ -29,15 +30,16 @@ export default () => {
         })
         watchedObject.listAddRssNews = { [id]: { ...data.feed, linkFeed: inputValue, id }, ...state.listAddRssNews }
         watchedObject.feedbackRss = message
-        watchedObject.processState = 'received'
+        watchedObject.uiState.processState = 'received'
         watchedObject.conditionForm = 'success'
         watchedObject.rssIsValid = true
+        watchedObject.uiState.posts = { ...posts.reduce((acc, { id }) => { return { ...acc, [id]: { status: 'not view' } } }, {}), ...state.uiState.posts }
         watchedObject.posts = [...posts, ...state.posts]
       })
       .catch((e) => {
         const message = e.message.key
-        watchedObject.processState = 'error'
-        watchedObject.conditionForm = 'error'
+        watchedObject.uiState.processState = 'error'
+        watchedObject.conditionForm = 'failed'
         watchedObject.feedbackRss = message
         watchedObject.rssIsValid = false
       })
@@ -67,6 +69,11 @@ function update() {
           const id = uniqueId()
           return { ...post, id }
         })
+        watchedObject.uiState.posts = {
+          ...state.uiState.posts, 
+          ...postsWithId.reduce((acc, { id }) => { 
+            return { ...acc, [id]: { status: 'not view' } } }, {}), 
+        }
         watchedObject.posts = [...postsWithId, ...state.posts]
       }
     })),

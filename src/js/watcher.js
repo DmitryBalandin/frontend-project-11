@@ -4,5 +4,5 @@ import { renderErrors, renderMain } from './view'
 
 export const watchedObject = onChange(state, function () {
   renderErrors(state)
-  renderMain(Object.values(state.listAddRssNews), state.posts, state.uiPost)
+  renderMain(Object.values(state.listAddRssNews), state.posts, state.uiState.posts)
 })

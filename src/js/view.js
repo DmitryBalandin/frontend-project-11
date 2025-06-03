@@ -6,8 +6,8 @@ export const renderErrors = (state) => {
   const input = document.querySelector('#url-input')
   const feedback = document.querySelector('p.feedback')
   const button = document.querySelector('button[type=submit]')
-  handleProcessState(state.processState, button)
-  if (state.conditionForm === 'error') {
+  handleProcessState(button, state.uiState.processState)
+  if (state.conditionForm === 'failed') {
     input.classList.add('is-invalid')
     feedback.classList.remove('text-success')
     feedback.classList.add('text-danger')
@@ -34,7 +34,7 @@ function createFeeds(feeds) {
 function createPosts(posts, uiPosts) {
   const postsElements = posts.map((post) => {
     return `<li class="list-group-item d-flex justify-content-between align-items-start border-0 border-end-0">
-            <a href="${post.link}" class="${uiPosts.includes(post.id) ? 'fw-normal link-secondary' : 'fw-bold'}" data-id="${post.id}" target="_blank" rel="noopener noreferrer">
+            <a href="${post.link}" class="${uiPosts[post.id].status === 'viewed' ? 'fw-normal link-secondary' : 'fw-bold'}" data-id="${post.id}" target="_blank" rel="noopener noreferrer">
               ${post.title}
             </a>
             <button type="button" class="btn btn-outline-primary btn-sm" data-id="${post.id}" data-bs-toggle="modal" data-bs-target="#modal" >
@@ -82,19 +82,19 @@ export const renderMain = (feeds, posts, uiPosts) => {
 function handleProcessState(element, processState) {
   switch (processState) {
     case 'received':
-      element.disabled = false
+      element.classList.remove('disabled')
       break
 
     case 'error':
-      element.disabled = false
+      element.classList.remove('disabled')
       break
 
     case 'sending':
-      element.disabled = true
+      element.classList.add('disabled')
       break
 
     case 'filling':
-      element.disabled = false
+      element.classList.remove('disabled')
       break
     default:
       break
@@ -113,6 +113,5 @@ exampleModal.addEventListener('show.bs.modal', function (event) {
   modalTitle.textContent = feed.title
   modalDescription.textContent = feed.description
   modalLink.setAttribute('href', feed.link)
-  watchedObject.uiPost = [...watchedObject.uiPost, buttonId]
-  console.log(state.uiPost)
+  watchedObject.uiState.posts = { ...watchedObject.uiState.posts, ...{ [buttonId]: { status: 'viewed' } } }
 })

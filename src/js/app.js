@@ -44,7 +44,7 @@ export default () => {
  
 }
 
-export const  update = () => {
+export const update = () => {
   const arrayUrslRss = Object.values(watchedObject.listAddRssNews).map(value => value.linkFeed)
   Promise.allSettled(arrayUrslRss.map(url => queryRss(url)))
     .then((results) => {

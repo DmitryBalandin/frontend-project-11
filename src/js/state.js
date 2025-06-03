@@ -1,6 +1,5 @@
 const state = {
   conditionForm: 'empty',
-  processState: 'filling',
   listAddRssNews: {},
   posts: [],
   feedbackRss: '',

@@ -27,11 +27,16 @@ export default () => {
           const id = uniqueId()
           return { ...post, id }
         })
+        const uiPosts = posts.reduce((acc, { id }) => {
+          return {
+            ...acc, [id]: { status: 'not view' }
+          }
+        }, {})
         watchedObject.listAddRssNews = { [id]: { ...data.feed, linkFeed: inputValue, id }, ...state.listAddRssNews }
         watchedObject.feedbackRss = message
         watchedObject.uiState.processState = 'received'
         watchedObject.conditionForm = 'success'
-        watchedObject.uiState.posts = { ...posts.reduce((acc, { id }) => { return { ...acc, [id]: { status: 'not view' } } }, {}), ...state.uiState.posts }
+        watchedObject.uiState.posts = {...uiPosts, ...state.uiState.posts}
         watchedObject.posts = [...posts, ...state.posts]
       })
       .catch((e) => {
@@ -41,7 +46,6 @@ export default () => {
         watchedObject.feedbackRss = message
       })
   })
- 
 }
 
 export const update = () => {
@@ -67,9 +71,10 @@ export const update = () => {
           return { ...post, id }
         })
         watchedObject.uiState.posts = {
-          ...state.uiState.posts, 
-          ...postsWithId.reduce((acc, { id }) => { 
-            return { ...acc, [id]: { status: 'not view' } } }, {}), 
+          ...state.uiState.posts,
+          ...postsWithId.reduce((acc, { id }) => {
+            return { ...acc, [id]: { status: 'not view' } }
+          }, {}),
         }
         watchedObject.posts = [...postsWithId, ...state.posts]
       }

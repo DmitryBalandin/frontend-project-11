@@ -6,11 +6,11 @@ const getProxyUrl = (url) => {
   proxyUrl.searchParams.set('url', url)
   return proxyUrl.toString()
 }
-export default (url) => {
+export default (url, id = null) => {
   const urlWithSettings = getProxyUrl(url)
   return axios.get(urlWithSettings)
     .then((response) => {
-      if (response.status === 200) return response.data.contents
+      if (response.status === 200) return id ? { id, data: response.data.contents } : response.data.contents
       throw new Error('Network response was not ok.')
     })
     .catch(() => {

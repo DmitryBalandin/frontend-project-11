@@ -19,7 +19,7 @@ export default () => {
     const formData = new FormData(form)
     const inputValue = formData.get('url')
     watchedObject.uiState.processState = 'filling'
-    validator(inputValue, Object.values(state.listAddRssNews).map(value => value.linkFeed))
+    validator(inputValue, Object.values(state.feeds).map(value => value.linkFeed))
       .then((value) => {
         watchedObject.processState = 'sending'
         return queryRss(value)
@@ -29,22 +29,16 @@ export default () => {
       })
       .then((data) => {
         const message = 'success'
-        const id = uniqueId()
+        const feedID = uniqueId()
         const posts = data.posts.map((post) => {
-          const id = uniqueId()
-          return { ...post, id }
+          const postID = uniqueId()
+          return { ...post, postID, feedID }
         })
-        const uiPosts = posts.reduce((acc, { id }) => {
-          return {
-            ...acc, [id]: { status: 'not view' },
-          }
-        }, {})
-        watchedObject.listAddRssNews = { [id]: { ...data.feed, linkFeed: inputValue, id }, ...state.listAddRssNews }
+        watchedObject.feeds = { [feedID]: { ...data.feed, linkFeed: inputValue, feedID }, ...watchedObject.feeds }
         watchedObject.feedbackRss = message
         watchedObject.uiState.processState = 'received'
         watchedObject.conditionForm = 'success'
-        watchedObject.uiState.posts = { ...uiPosts, ...state.uiState.posts }
-        watchedObject.posts = [...posts, ...state.posts]
+        watchedObject.posts = [...posts, ...watchedObject.posts]
       })
       .catch((e) => {
         const message = e.message.key
@@ -55,37 +49,44 @@ export default () => {
   })
 }
 
+function findNewPosts(posts, feedID, existPosts) {
+  const postsLinks = existPosts.filter((value) => value.feedID === feedID)
+    .map(({ link }) => link)
+  const newPosts = posts.filter(({ link }) => !postsLinks.includes(link))
+  return newPosts.length === 0 ? null : newPosts.map((post) => {
+    const postID = uniqueId()
+    return { ...post, postID, feedID }
+  })
+}
+
 function update() {
-  const arrayUrslRss = Object.values(watchedObject.listAddRssNews).map(value => value.linkFeed)
-  Promise.allSettled(arrayUrslRss.map(url => queryRss(url)))
+  const arrayUrslRss = Object.values(watchedObject.feeds).map(value => {
+    return {
+      url: value.linkFeed, feedID: value.feedID
+    }
+  })
+  
+  Promise.allSettled(arrayUrslRss.map(({ url, feedID }) => queryRss(url, feedID)))
     .then((results) => {
       return results.map((result) => {
         if (result.status == 'fulfilled') {
-          return parserRss(result.value)
+          const feedID = result.value.id
+          const { posts } = parserRss(result.value.data)
+          const newPosts  = findNewPosts(posts,feedID,state.posts)
+          if(newPosts) {
+            watchedObject.posts = [...newPosts, ...watchedObject.posts]
+          }
         }
         if (result.status == 'rejected') {
           return null
         }
       })
     })
-    .then(results => results.filter(value => value != null))
-    .then(result => Promise.allSettled(result.map(({ posts }) => {
-      const postsLinks = state.posts.map(({ link }) => link)
-      const newPosts = posts.filter(({ link }) => !postsLinks.includes(link))
-      if (newPosts.length !== 0) {
-        const postsWithId = newPosts.map((post) => {
-          const id = uniqueId()
-          return { ...post, id }
-        })
-        watchedObject.uiState.posts = {
-          ...state.uiState.posts,
-          ...postsWithId.reduce((acc, { id }) => {
-            return { ...acc, [id]: { status: 'not view' } }
-          }, {}),
-        }
-        watchedObject.posts = [...postsWithId, ...state.posts]
-      }
-    })),
-    )
-  setTimeout(() => update(), 5000)
+    .catch((e) => console.log(e))
+    .finally(setTimeout(() => update(), 5000))
 }
+// https://aljazeera.com/xml/rss/all.xml
+
+// https://buzzfeed.com/world.xml
+
+// https://thecipherbrief.com/feed

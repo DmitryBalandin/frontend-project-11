@@ -24,6 +24,7 @@ export const renderErrors = (state) => {
 }
 function createFeeds(feeds) {
   const feedsElements = feeds.map((feed) => {
+    
     return `<li class="list-group-item border-0 border-end-0">
               <h3 class="h6 m-0">${feed.title}</h3>
               <p class="m-0 small text-black-50">${feed.description}</p>
@@ -32,21 +33,24 @@ function createFeeds(feeds) {
   return feedsElements.reverse().join('')
 }
 
-function createPosts(posts, uiPosts) {
+function createPosts(posts, seenPosts) {
   const postsElements = posts.map((post) => {
     return `<li class="list-group-item d-flex justify-content-between align-items-start border-0 border-end-0">
-            <a href="${post.link}" class="${uiPosts[post.id].status === 'viewed' ? 'fw-normal link-secondary' : 'fw-bold'}" data-id="${post.id}" target="_blank" rel="noopener noreferrer">
+            <a href="${post.link}" 
+            class="${seenPosts.has(post.postID) ? 'fw-normal link-secondary' : 'fw-bold'}"
+            data-id="${post.postID}" target="_blank" rel="noopener noreferrer">
               ${post.title}
             </a>
-            <button type="button" class="btn btn-outline-primary btn-sm" data-id="${post.id}" data-bs-toggle="modal" data-bs-target="#modal" >
+            <button type="button" class="btn btn-outline-primary btn-sm" data-id="${post.postID}" data-bs-toggle="modal" data-bs-target="#modal" >
               Просмотр
             </button>
           </li>`
   })
+  //  class="${uiPosts[post.postID].status === 'viewed' ? 'fw-normal link-secondary' : 'fw-bold'}"
   return postsElements.join('')
 }
 
-export const renderMain = (feeds, posts, uiPosts) => {
+export const renderMain = (feeds, posts, seenPosts) => {
   if (feeds.length === 0) return
   const body = document.querySelector('body')
   let sectionMain = body.querySelector('section.container-fluid.container-xxl.p-5')
@@ -64,7 +68,7 @@ export const renderMain = (feeds, posts, uiPosts) => {
           </h2>
         </div>
         <ul class="list-group border-0 rounded-0">
-          ${createPosts(posts, uiPosts)}
+          ${createPosts(posts, seenPosts)}
         </ul>
       </div>
     </div>
@@ -107,12 +111,12 @@ new bootstrap.Modal(exampleModal)
 exampleModal.addEventListener('show.bs.modal', function (event) {
   const button = event.relatedTarget
   const buttonId = button.dataset.id
-  const [feed] = state.posts.filter(({ id }) => buttonId === id)
+  const [post] = state.posts.filter(({ postID }) => buttonId === postID)
   const modalTitle = exampleModal.querySelector('.modal-title')
   const modalDescription = exampleModal.querySelector('.modal-body')
   const modalLink = exampleModal.querySelector('.btn.btn-primary.full-article')
-  modalTitle.textContent = feed.title
-  modalDescription.textContent = feed.description
-  modalLink.setAttribute('href', feed.link)
-  watchedObject.uiState.posts = { ...watchedObject.uiState.posts, ...{ [buttonId]: { status: 'viewed' } } }
+  modalTitle.textContent = post.title
+  modalDescription.textContent = post.description
+  modalLink.setAttribute('href', post.link)
+  watchedObject.ui.seenPosts.add(post.postID)
 })

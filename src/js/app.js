@@ -62,7 +62,7 @@ function findNewPosts(posts, feedID, existPosts) {
 function update() {
   const arrayUrslRss = Object.values(watchedObject.feeds).map(value => {
     return {
-      url: value.linkFeed, feedID: value.feedID
+      url: value.linkFeed, feedID: value.feedID,
     }
   })
   
@@ -72,8 +72,8 @@ function update() {
         if (result.status == 'fulfilled') {
           const feedID = result.value.id
           const { posts } = parserRss(result.value.data)
-          const newPosts  = findNewPosts(posts,feedID,state.posts)
-          if(newPosts) {
+          const newPosts = findNewPosts(posts, feedID, state.posts)
+          if (newPosts) {
             watchedObject.posts = [...newPosts, ...watchedObject.posts]
           }
         }

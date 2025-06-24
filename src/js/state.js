@@ -8,7 +8,7 @@ const state = {
     posts: [],
   },
   ui:{
-    seenPosts: new Set()
-  }
+    seenPosts: new Set(),
+  },
 }
 export default state

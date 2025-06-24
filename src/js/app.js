@@ -6,6 +6,7 @@ import parserRss from './parser.js'
 import uniqueId from 'lodash.uniqueid'
 import i18next from 'i18next'
 import resources from '../js/locales/index'
+import * as bootstrap from 'bootstrap'
 
 export default () => {
   i18next.init({
@@ -19,7 +20,7 @@ export default () => {
     const formData = new FormData(form)
     const inputValue = formData.get('url')
     watchedObject.uiState.processState = 'filling'
-    validator(inputValue, Object.values(state.feeds).map(value => value.linkFeed))
+    validator(inputValue, Object.values(watchedObject.feeds).map(value => value.linkFeed))
       .then((value) => {
         watchedObject.processState = 'sending'
         return queryRss(value)
@@ -72,7 +73,7 @@ function update() {
         if (result.status == 'fulfilled') {
           const feedID = result.value.id
           const { posts } = parserRss(result.value.data)
-          const newPosts = findNewPosts(posts, feedID, state.posts)
+          const newPosts = findNewPosts(posts, feedID, watchedObject.posts)
           if (newPosts) {
             watchedObject.posts = [...newPosts, ...watchedObject.posts]
           }
@@ -85,6 +86,21 @@ function update() {
     .catch((e) => console.log(e))
     .finally(setTimeout(() => update(), 5000))
 }
+
+const exampleModal = document.getElementById('modal')
+new bootstrap.Modal(exampleModal)
+exampleModal.addEventListener('show.bs.modal', function (event) {
+  const button = event.relatedTarget
+  const buttonId = button.dataset.id
+  const [post] = watchedObject.posts.filter(({ postID }) => buttonId === postID)
+  const modalTitle = exampleModal.querySelector('.modal-title')
+  const modalDescription = exampleModal.querySelector('.modal-body')
+  const modalLink = exampleModal.querySelector('.btn.btn-primary.full-article')
+  modalTitle.textContent = post.title
+  modalDescription.textContent = post.description
+  modalLink.setAttribute('href', post.link)
+  watchedObject.ui.seenPosts.add(post.postID)
+})
 // https://aljazeera.com/xml/rss/all.xml
 
 // https://buzzfeed.com/world.xml

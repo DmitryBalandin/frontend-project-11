@@ -1,7 +1,5 @@
-import state from './state'
-import * as bootstrap from 'bootstrap'
-import { watchedObject } from './watcher'
 import i18next from 'i18next'
+
 
 export const renderErrors = (state) => {
   const input = document.querySelector('#url-input')
@@ -106,17 +104,3 @@ function handleProcessState(element, processState) {
   }
 }
 
-const exampleModal = document.getElementById('modal')
-new bootstrap.Modal(exampleModal)
-exampleModal.addEventListener('show.bs.modal', function (event) {
-  const button = event.relatedTarget
-  const buttonId = button.dataset.id
-  const [post] = state.posts.filter(({ postID }) => buttonId === postID)
-  const modalTitle = exampleModal.querySelector('.modal-title')
-  const modalDescription = exampleModal.querySelector('.modal-body')
-  const modalLink = exampleModal.querySelector('.btn.btn-primary.full-article')
-  modalTitle.textContent = post.title
-  modalDescription.textContent = post.description
-  modalLink.setAttribute('href', post.link)
-  watchedObject.ui.seenPosts.add(post.postID)
-})

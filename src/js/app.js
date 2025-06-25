@@ -66,8 +66,8 @@ function findNewPosts(posts, feedID, existPosts) {
     .map(({ link }) => link)
   const newPosts = posts.filter(({ link }) => !postsLinks.includes(link))
   return newPosts.length === 0
-    ? null :
-    newPosts.map((post) => {
+    ? null
+    : newPosts.map((post) => {
       const postID = uniqueId()
       return { ...post, postID, feedID }
     })

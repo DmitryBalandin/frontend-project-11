@@ -28,8 +28,9 @@ function handleFormState({ isValid, error }) {
 }
 
 function handleSendingProcess({ status, error }) {
-  console.log(status)
   switch (status) {
+    case 'filling':
+      break
     case 'loading':
       input.setAttribute('disabled', true)
       button.setAttribute('disabled', true)
@@ -59,7 +60,6 @@ function handleSendingProcess({ status, error }) {
 
 function createFeeds(feeds) {
   const feedsElements = feeds.map((feed) => {
-    
     return `<li class="list-group-item border-0 border-end-0">
               <h3 class="h6 m-0">${feed.title}</h3>
               <p class="m-0 small text-black-50">${feed.description}</p>
@@ -118,4 +118,3 @@ export const renderMain = (feeds, posts, seenPosts) => {
     </div>
   </div>`
 }
-

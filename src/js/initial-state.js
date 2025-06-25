@@ -1,15 +1,15 @@
 const initialState = {
   posts: [],
   feeds: {},
-  processSending:{
-    status: '', 
+  processSending: {
+    status: '',
     error: '',
   },
-  statusForm:{
+  statusForm: {
     isValid: false,
     error: null,
   },
-  ui:{
+  ui: {
     seenPosts: new Set(),
   },
 }

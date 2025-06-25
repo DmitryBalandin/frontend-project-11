@@ -21,7 +21,7 @@ const validator = (inputValue, listAddRssNews) => {
   return urlShema
     .validate({ url: inputValue }, { abortEarly: false })
     .then(() => null)
-    .catch((erorr) => erorr.message)
+    .catch(erorr => erorr.message)
 }
 
 export default validator

@@ -7,13 +7,21 @@ import i18next from 'i18next'
 import resources from '../js/locales/index'
 import * as bootstrap from 'bootstrap'
 
+export const elements = {
+  form: document.querySelector('form'),
+  input: document.querySelector('#url-input'),
+  button: document.querySelector('button[type=submit]'),
+  feedback: document.querySelector('p.feedback'),
+  body: document.querySelector('body')
+}
+
 export default () => {
   i18next.init({
     lng: 'ru',
     resources: resources,
   })
   update()
-  const form = document.querySelector('form')
+  const form = elements.form
   form.addEventListener('submit', (e) => {
     e.preventDefault()
     const formData = new FormData(form)
@@ -23,10 +31,10 @@ export default () => {
       .then((erorr) => {
         if (erorr) {
           watchedObject.feedbackRss = erorr.key
-          watchedObject.statusForm ={ isValid:false, error:erorr.key }
+          watchedObject.statusForm = { isValid: false, error: erorr.key }
           return
         }
-        watchedObject.statusForm ={ isValid:true, error:null }
+        watchedObject.statusForm ={ isValid: true, error: null }
         loadDate(inputValue)
       })
       .catch((e) => {
@@ -37,11 +45,9 @@ export default () => {
 
 function loadDate(url) {
   watchedObject.processSending.status = 'loading'
-  console.log('url', url)
   return queryRss(url)
-    .then((data) =>{
+    .then((data) => {
       const normalizeData = parserRss(data)
-      console.log(normalizeData)
       const feedID = uniqueId()
       const posts = normalizeData.posts.map((post) => {
         const postID = uniqueId()
@@ -51,8 +57,7 @@ function loadDate(url) {
       watchedObject.posts = [...posts, ...watchedObject.posts]
       watchedObject.processSending = { error: null, status: 'sucess' }
     })
-    .catch((e) =>{
-      console.log(e.message.key )
+    .catch((e) => {
       if (e.message.key === 'errors.rssIsNotValid' || e.message.key === 'errors.network') {
         watchedObject.processSending = { error: e.message.key, status: 'fail' }
       } else { 

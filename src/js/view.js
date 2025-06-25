@@ -1,8 +1,9 @@
 import i18next from 'i18next'
+import { elements } from './app'
 
-const input = document.querySelector('#url-input')
-const feedback = document.querySelector('p.feedback')
-const button = document.querySelector('button[type=submit]')
+const input = elements.input
+const feedback = elements.feedback
+const button = elements.button
 
 export const renderErrors = (state) => {
   handleFormState(state.statusForm)
@@ -86,7 +87,7 @@ function createPosts(posts, seenPosts) {
 
 export const renderMain = (feeds, posts, seenPosts) => {
   if (feeds.length === 0) return
-  const body = document.querySelector('body')
+  const body = elements.body
   let sectionMain = body.querySelector('section.container-fluid.container-xxl.p-5')
   if (!sectionMain) {
     sectionMain = document.createElement('section')

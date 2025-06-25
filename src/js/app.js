@@ -54,8 +54,8 @@ function loadDate(url) {
     .catch((e) => {
       if (e.message.key === 'errors.rssIsNotValid' || e.message.key === 'errors.network') {
         watchedObject.processSending = { error: e.message.key, status: 'fail' }
-      } 
-      else { 
+      }
+      else {
         watchedObject.processSending = { error: 'errors.unknow', status: 'fail' }
       }
     })
@@ -66,8 +66,8 @@ function findNewPosts(posts, feedID, existPosts) {
     .map(({ link }) => link)
   const newPosts = posts.filter(({ link }) => !postsLinks.includes(link))
   return newPosts.length === 0
-    ?
-    null : newPosts.map((post) => {
+    ? null :
+    newPosts.map((post) => {
       const postID = uniqueId()
       return { ...post, postID, feedID }
     })

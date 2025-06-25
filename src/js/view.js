@@ -52,7 +52,6 @@ function handleSendingProcess({ status, error }) {
       feedback.classList.add('text-danger')
       feedback.innerHTML = i18next.t(error)
       break
-   
     default:
       break
   }

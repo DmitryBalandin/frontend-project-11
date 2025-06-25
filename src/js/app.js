@@ -37,7 +37,6 @@ export default () => {
 
 function loadDate(url) {
   watchedObject.processSending.status = 'loading'
-  console.log('url', url)
   return queryRss(url)
     .then((data) => {
       const normalizeData = parserRss(data)

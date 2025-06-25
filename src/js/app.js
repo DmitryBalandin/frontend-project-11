@@ -7,21 +7,14 @@ import i18next from 'i18next'
 import resources from '../js/locales/index'
 import * as bootstrap from 'bootstrap'
 
-export const elements = {
-  form: document.querySelector('form'),
-  input: document.querySelector('#url-input'),
-  button: document.querySelector('button[type=submit]'),
-  feedback: document.querySelector('p.feedback'),
-  body: document.querySelector('body')
-}
 
 export default () => {
   i18next.init({
     lng: 'ru',
     resources: resources,
   })
-  update()
-  const form = elements.form
+  updateNews()
+  const form = document.querySelector('form')
   form.addEventListener('submit', (e) => {
     e.preventDefault()
     const formData = new FormData(form)
@@ -45,9 +38,11 @@ export default () => {
 
 function loadDate(url) {
   watchedObject.processSending.status = 'loading'
+  console.log('url', url)
   return queryRss(url)
     .then((data) => {
       const normalizeData = parserRss(data)
+      console.log(normalizeData)
       const feedID = uniqueId()
       const posts = normalizeData.posts.map((post) => {
         const postID = uniqueId()
@@ -76,7 +71,7 @@ function findNewPosts(posts, feedID, existPosts) {
   })
 }
 
-function update() {
+function updateNews() {
   const arrayUrslRss = Object.values(watchedObject.feeds).map(value => {
     return {
       url: value.linkFeed, feedID: value.feedID,

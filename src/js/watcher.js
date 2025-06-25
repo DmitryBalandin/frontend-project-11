@@ -1,8 +1,8 @@
 import onChange from 'on-change'
-import state from './state'
+import initialState from './initial-state'
 import { renderErrors, renderMain } from './view'
 
-export const watchedObject = onChange(state, function () {
+export const watchedObject = onChange(initialState, function () {
   // renderErrors(state)
   // renderMain(Object.values(state.feeds), state.posts, state.ui.seenPosts)
   renderErrors(watchedObject)

@@ -1,25 +1,62 @@
 import i18next from 'i18next'
 
+const input = document.querySelector('#url-input')
+const feedback = document.querySelector('p.feedback')
+const button = document.querySelector('button[type=submit]')
 
 export const renderErrors = (state) => {
-  const input = document.querySelector('#url-input')
-  const feedback = document.querySelector('p.feedback')
-  const button = document.querySelector('button[type=submit]')
-  handleProcessState(button, state.uiState.processState)
-  if (state.conditionForm === 'failed') {
-    input.classList.add('is-invalid')
-    feedback.classList.remove('text-success')
-    feedback.classList.add('text-danger')
-    feedback.innerHTML = i18next.t(state.feedbackRss)
-  }
-  if (state.conditionForm === 'success') {
-    input.classList.remove('is-invalid')
-    feedback.innerHTML = i18next.t(state.feedbackRss)
-    feedback.classList.remove('text-danger')
-    feedback.classList.add('text-success')
-    input.value = ''
+  handleFormState(state.statusForm)
+  handleSendingProcess(state.processSending)
+}
+
+function handleFormState({ isValid, error }) {
+  switch (isValid) {
+    case true:
+      input.classList.remove('is-invalid')
+      feedback.innerHTML = ''
+      feedback.classList.remove('text-danger')
+      break
+    case false:
+      input.classList.add('is-invalid')
+      feedback.classList.remove('text-success')
+      feedback.classList.add('text-danger')
+      feedback.innerHTML = i18next.t(error)
+      break
+    default:
+      break
   }
 }
+
+function handleSendingProcess({ status, error }) {
+  console.log(status)
+  switch (status) {
+    case 'loading':
+      input.setAttribute('disabled', true)
+      button.setAttribute('disabled', true)
+      break
+    case 'sucess':
+      input.removeAttribute('disabled')
+      button.removeAttribute('disabled')
+      input.classList.remove('is-invalid')
+      feedback.innerHTML = i18next.t('success')
+      feedback.classList.remove('text-danger')
+      feedback.classList.add('text-success')
+      input.value = ''
+      break
+    case 'fail':
+      input.removeAttribute('disabled')
+      button.removeAttribute('disabled')
+      input.classList.add('is-invalid')
+      feedback.classList.remove('text-success')
+      feedback.classList.add('text-danger')
+      feedback.innerHTML = i18next.t(error)
+      break
+   
+    default:
+      break
+  }
+}
+
 function createFeeds(feeds) {
   const feedsElements = feeds.map((feed) => {
     
@@ -44,7 +81,6 @@ function createPosts(posts, seenPosts) {
             </button>
           </li>`
   })
-  //  class="${uiPosts[post.postID].status === 'viewed' ? 'fw-normal link-secondary' : 'fw-bold'}"
   return postsElements.join('')
 }
 
@@ -81,26 +117,5 @@ export const renderMain = (feeds, posts, seenPosts) => {
       </div>
     </div>
   </div>`
-}
-function handleProcessState(element, processState) {
-  switch (processState) {
-    case 'received':
-      element.classList.remove('disabled')
-      break
-
-    case 'error':
-      element.classList.remove('disabled')
-      break
-
-    case 'sending':
-      element.classList.add('disabled')
-      break
-
-    case 'filling':
-      element.classList.remove('disabled')
-      break
-    default:
-      break
-  }
 }
 

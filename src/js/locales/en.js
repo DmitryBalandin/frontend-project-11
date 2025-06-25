@@ -6,6 +6,7 @@ export default {
       existOnList: 'url must not be one of the following values',
       network: 'network problems',
       rssIsNotValid: 'The resource does not contain a valid RSS',
+      unknow: 'Unknow error',
     },
     success: 'RSS loaded successfully',
   },

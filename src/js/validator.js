@@ -18,10 +18,10 @@ const validator = (inputValue, listAddRssNews) => {
       .url()
       .notOneOf(listAddRssNews),
   })
-  return urlShema.validate({ url: inputValue }, { abortEarly: false })
-    .then(() => {
-      return inputValue
-    })
+  return urlShema
+    .validate({ url: inputValue }, { abortEarly: false })
+    .then(() => null)
+    .catch((erorr) => erorr.message)
 }
 
 export default validator

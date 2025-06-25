@@ -1,6 +1,5 @@
 import { watchedObject } from './watcher.js'
 import validator from './validator.js'
-import state from './state.js'
 import queryRss from './queryRss.js'
 import parserRss from './parser.js'
 import uniqueId from 'lodash.uniqueid'
@@ -19,35 +18,47 @@ export default () => {
     e.preventDefault()
     const formData = new FormData(form)
     const inputValue = formData.get('url')
-    watchedObject.uiState.processState = 'filling'
+    watchedObject.processSending.status = 'filling'
     validator(inputValue, Object.values(watchedObject.feeds).map(value => value.linkFeed))
-      .then((value) => {
-        watchedObject.processState = 'sending'
-        return queryRss(value)
-      })
-      .then((value) => {
-        return parserRss(value)
-      })
-      .then((data) => {
-        const message = 'success'
-        const feedID = uniqueId()
-        const posts = data.posts.map((post) => {
-          const postID = uniqueId()
-          return { ...post, postID, feedID }
-        })
-        watchedObject.feeds = { [feedID]: { ...data.feed, linkFeed: inputValue, feedID }, ...watchedObject.feeds }
-        watchedObject.feedbackRss = message
-        watchedObject.uiState.processState = 'received'
-        watchedObject.conditionForm = 'success'
-        watchedObject.posts = [...posts, ...watchedObject.posts]
+      .then((erorr) => {
+        if (erorr) {
+          watchedObject.feedbackRss = erorr.key
+          watchedObject.statusForm ={ isValid:false, error:erorr.key }
+          return
+        }
+        watchedObject.statusForm ={ isValid:true, error:null }
+        loadDate(inputValue)
       })
       .catch((e) => {
-        const message = e.message.key
-        watchedObject.uiState.processState = 'error'
-        watchedObject.conditionForm = 'failed'
-        watchedObject.feedbackRss = message
+        console.log(e)
       })
   })
+}
+
+function loadDate(url) {
+  watchedObject.processSending.status = 'loading'
+  console.log('url', url)
+  return queryRss(url)
+    .then((data) =>{
+      const normalizeData = parserRss(data)
+      console.log(normalizeData)
+      const feedID = uniqueId()
+      const posts = normalizeData.posts.map((post) => {
+        const postID = uniqueId()
+        return { ...post, postID, feedID }
+      })
+      watchedObject.feeds = { [feedID]: { ...normalizeData.feed, linkFeed: url, feedID }, ...watchedObject.feeds }
+      watchedObject.posts = [...posts, ...watchedObject.posts]
+      watchedObject.processSending = { error: null, status: 'sucess' }
+    })
+    .catch((e) =>{
+      console.log(e.message.key )
+      if (e.message.key === 'errors.rssIsNotValid' || e.message.key === 'errors.network') {
+        watchedObject.processSending = { error: e.message.key, status: 'fail' }
+      } else { 
+        watchedObject.processSending = { error: 'errors.unknow', status: 'fail' }
+      }
+    })
 }
 
 function findNewPosts(posts, feedID, existPosts) {
@@ -101,8 +112,3 @@ exampleModal.addEventListener('show.bs.modal', function (event) {
   modalLink.setAttribute('href', post.link)
   watchedObject.ui.seenPosts.add(post.postID)
 })
-// https://aljazeera.com/xml/rss/all.xml
-
-// https://buzzfeed.com/world.xml
-
-// https://thecipherbrief.com/feed

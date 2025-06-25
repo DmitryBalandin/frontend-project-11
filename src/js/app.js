@@ -7,7 +7,6 @@ import i18next from 'i18next'
 import resources from '../js/locales/index'
 import * as bootstrap from 'bootstrap'
 
-
 export default () => {
   i18next.init({
     lng: 'ru',

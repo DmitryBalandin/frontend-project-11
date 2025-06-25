@@ -1,6 +1,5 @@
 import i18next from 'i18next'
 
-
 const input = document.querySelector('#url-input')
 const feedback = document.querySelector('p.feedback')
 const button = document.querySelector('button[type=submit]')

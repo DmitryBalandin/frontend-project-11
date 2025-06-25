@@ -26,7 +26,7 @@ export default () => {
           watchedObject.statusForm = { isValid: false, error: erorr.key }
           return
         }
-        watchedObject.statusForm ={ isValid: true, error: null }
+        watchedObject.statusForm = { isValid: true, error: null }
         loadDate(inputValue)
       })
       .catch((e) => {
@@ -54,29 +54,31 @@ function loadDate(url) {
     .catch((e) => {
       if (e.message.key === 'errors.rssIsNotValid' || e.message.key === 'errors.network') {
         watchedObject.processSending = { error: e.message.key, status: 'fail' }
-      } else { 
+      } else 
+      { 
         watchedObject.processSending = { error: 'errors.unknow', status: 'fail' }
       }
     })
 }
 
 function findNewPosts(posts, feedID, existPosts) {
-  const postsLinks = existPosts.filter((value) => value.feedID === feedID)
+  const postsLinks = existPosts.filter(value => value.feedID === feedID)
     .map(({ link }) => link)
   const newPosts = posts.filter(({ link }) => !postsLinks.includes(link))
-  return newPosts.length === 0 ? null : newPosts.map((post) => {
+  return newPosts.length === 0 
+    ? null : newPosts.map((post) => {
     const postID = uniqueId()
     return { ...post, postID, feedID }
   })
 }
 
 function updateNews() {
-  const arrayUrslRss = Object.values(watchedObject.feeds).map(value => {
+  const arrayUrslRss = Object.values(watchedObject.feeds).map((value) => {
     return {
       url: value.linkFeed, feedID: value.feedID,
     }
   })
-  
+
   Promise.allSettled(arrayUrslRss.map(({ url, feedID }) => queryRss(url, feedID)))
     .then((results) => {
       return results.map((result) => {
@@ -93,8 +95,8 @@ function updateNews() {
         }
       })
     })
-    .catch((e) => console.log(e))
-    .finally(setTimeout(() => update(), 5000))
+    .catch(e => console.log(e))
+    .finally(setTimeout(() => updateNews(), 5000))
 }
 
 const exampleModal = document.getElementById('modal')

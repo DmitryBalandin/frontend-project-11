@@ -68,9 +68,9 @@ function findNewPosts(posts, feedID, existPosts) {
   return newPosts.length === 0
     ? null
     : newPosts.map((post) => {
-      const postID = uniqueId()
-      return { ...post, postID, feedID }
-    })
+        const postID = uniqueId()
+        return { ...post, postID, feedID }
+      })
 }
 
 function updateNews() {
